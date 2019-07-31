@@ -53,7 +53,8 @@ public:
     const rclcpp::node_interfaces::NodeGraphInterface::SharedPtr node_graph_interface,
     const rclcpp::node_interfaces::NodeServicesInterface::SharedPtr node_services_interface,
     const std::string & remote_node_name = "",
-    const rmw_qos_profile_t & qos_profile = rmw_qos_profile_parameters);
+    const rmw_qos_profile_t & qos_profile = rmw_qos_profile_parameters,
+    rclcpp::callback_group::CallbackGroup::SharedPtr group = nullptr);
 
   RCLCPP_PUBLIC
   AsyncParametersClient(
@@ -187,6 +188,7 @@ private:
   rclcpp::Client<rcl_interfaces::srv::DescribeParameters>::SharedPtr
     describe_parameters_client_;
   std::string remote_node_name_;
+  rclcpp::callback_group::CallbackGroup::SharedPtr callback_group_;
 };
 
 class SyncParametersClient
