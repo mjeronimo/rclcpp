@@ -42,6 +42,10 @@ protected:
 
   return blackboard_options;    
   }
+
+  bool read_only_;
+  rcl_interfaces::msg::SetParametersResult read_only_callback(
+    std::vector<rclcpp::Parameter> parameters);
 };
 
 }  // namespace rclcpp_parameter_blackboard

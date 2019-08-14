@@ -32,6 +32,26 @@ ParameterBlackboard::ParameterBlackboard(
     "Parameter blackboard node named '%s' ready, and serving '%zu' parameters already!",
     this->get_fully_qualified_name(), this->list_parameters(
       {}, rcl_interfaces::srv::ListParameters::Request::DEPTH_RECURSIVE).names.size());
+  
+  // Optional parameter to make parameter blackboard read-only
+  get_parameter_or("read_only", read_only_, false);
+  
+  set_on_parameters_set_callback(
+    std::bind(&ParameterBlackboard::read_only_callback, this, std::placeholders::_1));
+}
+
+rcl_interfaces::msg::SetParametersResult ParameterBlackboard::read_only_callback(
+  std::vector<rclcpp::Parameter> /* parameters */)
+{
+  auto result = rcl_interfaces::msg::SetParametersResult();
+  result.successful = true;
+
+  if (read_only_) {
+    result.successful = false;
+    result.reason = "Parameter blackboard is read-only";
+  }
+
+  return result;
 }
 
 }  // namespace rclcpp_parameter_blackboard
