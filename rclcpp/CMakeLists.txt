@@ -66,6 +66,7 @@ set(${PROJECT_NAME}_SRCS
   src/rclcpp/parameter_value.cpp
   src/rclcpp/parameter_client.cpp
   src/rclcpp/parameter_events_filter.cpp
+  src/rclcpp/parameter_events_subscriber.cpp
   src/rclcpp/parameter_map.cpp
   src/rclcpp/parameter_service.cpp
   src/rclcpp/publisher_base.cpp
@@ -308,6 +309,16 @@ if(BUILD_TESTING)
       "rosidl_typesupport_cpp"
     )
     target_link_libraries(test_parameter_events_filter ${PROJECT_NAME})
+  endif()
+  ament_add_gtest(test_parameter_events_subscriber test/test_parameter_events_subscriber.cpp)
+  if(TARGET test_parameter_events_subscriber)
+    ament_target_dependencies(test_parameter_events_subscriber
+      "rcl_interfaces"
+      "rmw"
+      "rosidl_generator_cpp"
+      "rosidl_typesupport_cpp"
+    )
+    target_link_libraries(test_parameter_events_subscriber ${PROJECT_NAME})
   endif()
   ament_add_gtest(test_parameter test/test_parameter.cpp)
   if(TARGET test_parameter)
