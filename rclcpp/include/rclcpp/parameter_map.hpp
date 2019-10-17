@@ -25,12 +25,15 @@
 #include "rclcpp/parameter.hpp"
 #include "rclcpp/parameter_value.hpp"
 #include "rclcpp/visibility_control.hpp"
+#include "rcl_interfaces/msg/parameter_descriptor.hpp"
 
 namespace rclcpp
 {
 
 /// A map of fully qualified node names to a list of parameters
-using ParameterMap = std::unordered_map<std::string, std::vector<Parameter>>;
+using rcl_interfaces::msg::ParameterDescriptor;
+using ParameterAndDescriptor = std::pair<Parameter, ParameterDescriptor>;
+using ParameterMap = std::unordered_map<std::string, std::vector<ParameterAndDescriptor>;
 
 /// Convert parameters from rcl_yaml_param_parser into C++ class instances.
 /// \param[in] c_params C structures containing parameters for multiple nodes.
@@ -47,6 +50,10 @@ parameter_map_from(const rcl_params_t * const c_params);
 RCLCPP_PUBLIC
 ParameterValue
 parameter_value_from(const rcl_variant_t * const c_value);
+
+RCLCPP_PUBLIC
+ParameterDescriptor
+parameter_descriptor_from(const rcl_param_descriptor_t * const c_descriptor);
 
 }  // namespace rclcpp
 
