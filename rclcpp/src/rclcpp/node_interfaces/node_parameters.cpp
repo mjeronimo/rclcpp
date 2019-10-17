@@ -112,8 +112,8 @@ NodeParameters::NodeParameters(
         if (iter->first == "/**" || iter->first == combined_name_) {
           // Combine parameter yaml files, overwriting values in older ones
           for (auto & param : iter->second) {
-            parameter_overrides_[param.get_name()] =
-              rclcpp::ParameterValue(param.get_value_message());
+            parameter_overrides_[(param.second.first).get_name()] =
+              rclcpp::ParameterValue((param.second.first).get_value_message());
           }
         }
       }
