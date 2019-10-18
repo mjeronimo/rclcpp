@@ -41,16 +41,6 @@ namespace rclcpp
 namespace node_interfaces
 {
 
-// Internal struct for holding useful info about parameters
-struct ParameterInfo
-{
-  /// Current value of the parameter.
-  rclcpp::ParameterValue value;
-
-  /// A description of the parameter
-  rcl_interfaces::msg::ParameterDescriptor descriptor;
-};
-
 // Internal RAII-style guard for mutation recursion
 class ParameterMutationRecursionGuard
 {
@@ -171,7 +161,7 @@ public:
   set_on_parameters_set_callback(OnParametersSetCallbackType callback) override;
 
   RCLCPP_PUBLIC
-  const std::map<std::string, rclcpp::ParameterValue> &
+  const std::map<std::string, ParameterInfo> &
   get_parameter_overrides() const override;
 
   using CallbacksContainerType = std::list<OnSetParametersCallbackHandle::WeakPtr>;
@@ -192,7 +182,7 @@ private:
 
   std::map<std::string, ParameterInfo> parameters_;
 
-  std::map<std::string, rclcpp::ParameterValue> parameter_overrides_;
+  std::map<std::string, ParameterInfo> parameter_overrides_;
 
   bool allow_undeclared_ = false;
 
