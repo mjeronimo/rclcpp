@@ -19,6 +19,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 #include "rclcpp/exceptions.hpp"
@@ -32,7 +33,8 @@ namespace rclcpp
 
 /// A map of fully qualified node names to a list of parameters
 using rcl_interfaces::msg::ParameterDescriptor;
-using ParameterAndDescriptor = std::unordered_map<std::string, std::pair<Parameter, ParameterDescriptor>>;
+using ParameterAndDescriptor = std::unordered_map<std::string, std::pair<Parameter,
+    ParameterDescriptor>>;
 using ParameterMap = std::unordered_map<std::string, ParameterAndDescriptor>;
 
 /// Convert parameters from rcl_yaml_param_parser into C++ class instances.
