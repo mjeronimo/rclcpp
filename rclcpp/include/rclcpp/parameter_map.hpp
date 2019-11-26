@@ -19,22 +19,22 @@
 
 #include <string>
 #include <unordered_map>
+#include <map>
 #include <utility>
 #include <vector>
 
 #include "rclcpp/exceptions.hpp"
-#include "rclcpp/parameter.hpp"
 #include "rclcpp/parameter_value.hpp"
 #include "rclcpp/visibility_control.hpp"
 #include "rcl_interfaces/msg/parameter_descriptor.hpp"
+#include "rclcpp/node_interfaces/node_parameters.hpp"
 
 namespace rclcpp
 {
 
 /// A map of fully qualified node names to a list of parameters
 using rcl_interfaces::msg::ParameterDescriptor;
-using ParameterAndDescriptor = std::unordered_map<std::string, std::pair<Parameter,
-    ParameterDescriptor>>;
+using ParameterAndDescriptor = std::map<std::string, rclcpp::node_interfaces::ParameterInfo>;
 using ParameterMap = std::unordered_map<std::string, ParameterAndDescriptor>;
 
 /// Convert parameters from rcl_yaml_param_parser into C++ class instances.

@@ -112,10 +112,12 @@ NodeParameters::NodeParameters(
         if (iter->first == "/**" || iter->first == combined_name_) {
           // Combine parameter yaml files, overwriting values in older ones
           for (auto & param : iter->second) {
-            rclcpp::node_interfaces::ParameterInfo param_info;
-            param_info.value = rclcpp::ParameterValue((param.second.first).get_value_message());
-            param_info.descriptor = param.second.second;
-            parameter_overrides_[(param.second.first).get_name()] = param_info;
+            if (param.second.value != ParameterValue()) {
+              parameter_overrides_[param.first].value = param.second.value;
+            }
+            if (param.second.descriptor != rcl_interfaces::msg::ParameterDescriptor()) {
+              parameter_overrides_[param.first].descriptor = param.second.descriptor;              
+            }
           }
         }
       }
@@ -345,22 +347,10 @@ __declare_parameter_common(
   // If descriptor override only, don't override parameter value
 
   if (!ignore_override && overrides_it != overrides.end()) {
-    auto has_parameter_override = false;
-    auto has_descriptor_override = false;
-
     if (overrides_it->second.value.get_type() != rclcpp::ParameterType::PARAMETER_NOT_SET) {
-      has_parameter_override = true;
+      initial_value = &overrides_it->second.value;
     }
     if (overrides_it->second.descriptor.name != "") {
-      has_descriptor_override = true;
-    }
-
-    if (has_parameter_override && has_descriptor_override) {
-      initial_value = &overrides_it->second.value;
-      parameter_infos.at(name).descriptor = overrides_it->second.descriptor;
-    } else if (has_parameter_override) {
-      initial_value = &overrides_it->second.value;
-    } else if (has_descriptor_override) {
       parameter_infos.at(name).descriptor = overrides_it->second.descriptor;
     }
   }
